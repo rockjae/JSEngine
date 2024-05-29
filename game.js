@@ -148,11 +148,24 @@ function renderPlayer() {
     const resizedWidth = player.width;
     const resizedHeight = resizedWidth / imageRatio;
 
+    // 플레이어 방향에 따라 회전 각도 설정
+    let rotationAngle = 1;
+    if (keysPressed['ArrowLeft']) {
+      rotationAngle = 1;
+    } else if (keysPressed['ArrowRight']) {
+      rotationAngle = -1;
+    }
+
+    // 회전을 위한 변환 설정
+    ctx.save();
+    ctx.translate(player.x - game.scrollOffset + resizedWidth / 2, player.y + resizedHeight / 2);
+    ctx.scale(-rotationAngle, 1); // 가로로 반전시키기
     ctx.drawImage(
       currentImage,
       0, 0, currentImage.width, currentImage.height, // 원본 이미지의 좌표와 크기
-      player.x - game.scrollOffset, player.y, resizedWidth, resizedHeight // 렌더링할 영역의 좌표와 크기
+      -resizedWidth / 2, -resizedHeight / 2, resizedWidth, resizedHeight // 렌더링할 영역의 좌표와 크기
     );
+    ctx.restore();
   }
 }
 
